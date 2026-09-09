@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#1237a6">
+  <title>Jayden的五域词汇远征</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="paper-noise" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#home" data-nav="home" aria-label="返回远征首页">
+      <span class="brand-mark">J</span>
+      <span><b>WORD QUEST</b><small>Jayden的五域词汇远征</small></span>
+    </a>
+    <nav aria-label="主导航">
+      <button class="nav-btn active" data-nav="home">远征地图</button>
+      <button class="nav-btn" data-nav="library">完整词库</button>
+      <button class="nav-btn" data-nav="history">学习档案</button>
+    </nav>
+    <button class="icon-btn" id="openSettings" aria-label="设置">⚙</button>
+  </header>
+
+  <main>
+    <section class="view active" id="view-home">
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">EXPEDITION LOG · <span id="todayLabel"></span></p>
+          <h1>把每一个陌生词，<br><em>变成绿色领地。</em></h1>
+          <p class="hero-note">诚实标红不是退步，而是发现下一座可以攻克的山。今天只完成眼前的一小队。</p>
+          <div class="hero-actions">
+            <button class="primary-btn" id="startReview"><span>⚔</span> 今日复习 <b id="reviewButtonCount">0</b></button>
+            <button class="secondary-btn" id="startScreening"><span>◉</span> 首轮筛查 <b id="screenButtonCount">60</b></button>
+          </div>
+        </div>
+        <div class="mission-card">
+          <div class="compass" aria-hidden="true"><i>N</i><span>✦</span></div>
+          <p>今日行动令</p>
+          <strong id="missionTitle">等待出发</strong>
+          <small id="missionCopy">先筛查一组词，建立属于Jayden的真实词汇地图。</small>
+          <div class="streak-seal"><b id="heroStreak">0</b><span>连续天数</span></div>
+        </div>
+      </div>
+
+      <div class="stat-strip" aria-label="学习概况">
+        <article><span class="stat-icon cobalt">⌁</span><div><small>今日到期</small><b id="statDue">0</b></div></article>
+        <article><span class="stat-icon gray">?</span><div><small>等待筛查</small><b id="statGray">872</b></div></article>
+        <article><span class="stat-icon green">✓</span><div><small>已经转绿</small><b id="statGreen">0</b></div></article>
+        <article><span class="stat-icon amber">★</span><div><small>稳定掌握</small><b id="statStable">0</b></div></article>
+        <article><span class="stat-icon coral">XP</span><div><small>远征经验</small><b id="statXp">0</b></div></article>
+      </div>
+
+      <section class="progress-board">
+        <div class="section-heading">
+          <div><p class="eyebrow">TWO WAYS TO WIN</p><h2>转绿只是第一步，稳定才是真通关</h2></div>
+          <div class="legend"><span><i class="dot red"></i>不会</span><span><i class="dot yellow"></i>模糊</span><span><i class="dot green"></i>会了</span><span><i class="dot stable"></i>稳定</span></div>
+        </div>
+        <div class="dual-progress">
+          <div><div class="progress-label"><b>当前转绿率</b><span id="greenPercent">0%</span></div><div class="track"><i id="greenBar"></i></div></div>
+          <div><div class="progress-label"><b>稳定掌握率</b><span id="stablePercent">0%</span></div><div class="track stable-track"><i id="stableBar"></i></div></div>
+        </div>
+      </section>
+
+      <section class="realm-section">
+        <div class="section-heading">
+          <div><p class="eyebrow">THE FIVE REALMS</p><h2>五域远征地图</h2></div>
+          <p class="section-note">每个圆点是一课。全绿升旗，全部稳定开启宝箱。</p>
+        </div>
+        <div class="realm-map" id="realmMap"></div>
+      </section>
+
+      <section class="how-it-works">
+        <article><span>01</span><b>灰词快筛</b><p>每天约60词，只判断认识度，不停下来精讲。</p></article>
+        <article><span>02</span><b>红黄短复习</b><p>红词1天、黄词3天后再见，最早到期优先。</p></article>
+        <article><span>03</span><b>绿色三次巩固</b><p>分别在7、14、30天后确认，全部通过才稳定。</p></article>
+      </section>
+    </section>
+
+    <section class="view" id="view-library">
+      <div class="page-title"><p class="eyebrow">FIELD LIBRARY · 872 ENTRIES</p><h1>完整词库</h1><p>按教材年级与Unit独立记录；相同拼写在不同年级不会互相覆盖。</p></div>
+      <div class="library-toolbar panel">
+        <label class="search-box"><span>⌕</span><input id="filterSearch" type="search" placeholder="搜索单词，例如 barrier"></label>
+        <label>年级<select id="filterGrade"><option value="">全部</option></select></label>
+        <label>Unit<select id="filterUnit"><option value="">全部</option></select></label>
+        <label>颜色<select id="filterColor"><option value="">全部</option><option value="gray">灰色 · 未筛查</option><option value="red">红色 · 不会</option><option value="yellow">黄色 · 模糊</option><option value="green">绿色 · 会了</option></select></label>
+        <label>状态<select id="filterStatus"><option value="">全部</option><option value="due">已经到期</option><option value="learning">巩固中</option><option value="stable">稳定掌握</option></select></label>
+        <button class="text-btn" id="clearFilters">清除</button>
+      </div>
+      <div class="library-meta"><b id="libraryCount">872条</b><span id="libraryHint">按G1 Unit 1开始排列</span><div><button class="text-btn" id="exportCsv">导出CSV</button><button class="text-btn" id="printLibrary">打印词表</button></div></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>词目</th><th>教材位置</th><th>颜色</th><th>复习状态</th><th class="no-print">操作</th></tr></thead>
+          <tbody id="wordTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="view" id="view-history">
+      <div class="page-title"><p class="eyebrow">CAPTAIN'S LOG</p><h1>学习档案</h1><p>颜色可以改变，进步不会消失。每一次诚实判断都保留在航行日志中。</p></div>
+      <div class="archive-grid">
+        <section class="panel archive-overview">
+          <p class="eyebrow">JAYDEN'S RECORD</p>
+          <div class="big-number"><b id="archiveXp">0</b><span>XP</span></div>
+          <div class="mini-stats"><div><b id="archiveDays">0</b><span>学习天数</span></div><div><b id="archiveReviews">0</b><span>累计判断</span></div><div><b id="archiveStable">0</b><span>稳定词目</span></div></div>
+        </section>
+        <section class="panel color-distribution"><p class="eyebrow">COLOR MAP</p><h2>当前颜色分布</h2><div id="distributionBars"></div></section>
+      </div>
+      <section class="panel daily-log-panel"><div class="section-heading"><div><p class="eyebrow">DAILY LOG</p><h2>每日战报</h2></div><span class="section-note">最近30个学习日</span></div><div class="daily-log" id="dailyLog"></div></section>
+      <section class="panel history-panel"><div class="section-heading"><div><p class="eyebrow">RECENT MOVES</p><h2>最近颜色变化</h2></div></div><div class="history-list" id="historyList"></div></section>
+    </section>
+  </main>
+
+  <dialog id="sessionDialog" class="session-dialog">
+    <div class="session-shell">
+      <header><button class="round-btn" id="pauseSession" aria-label="暂停并关闭">×</button><div><span id="sessionKind">首轮筛查</span><b id="sessionProgress">1 / 60</b></div><button class="round-btn" id="speakWord" aria-label="朗读当前单词">🔊</button></header>
+      <div class="session-track"><i id="sessionBar"></i></div>
+      <div class="word-card" id="wordCard">
+        <p id="wordMeta">G1 · Unit 1 · p.6</p>
+        <h2 id="sessionWord">sharp</h2>
+        <button class="definition-btn" id="showDefinition">查看英文释义</button>
+        <div class="definition-panel" id="definitionPanel" hidden></div>
+      </div>
+      <p class="rating-prompt">现在属于哪一种？诚实选择就会获得经验。</p>
+      <div class="rating-buttons">
+        <button data-rate="red"><span>1</span><b>不会</b><small>1天后再见</small></button>
+        <button data-rate="yellow"><span>2</span><b>有点模糊</b><small>3天后再见</small></button>
+        <button data-rate="green"><span>3</span><b>我会了</b><small id="greenNextLabel">7天后确认</small></button>
+      </div>
+      <footer><button class="text-btn" id="sessionBack" disabled>← 返回上一词</button><span id="backlogNote"></span><button class="text-btn" id="skipWord">本次跳过 →</button></footer>
+    </div>
+  </dialog>
+
+  <dialog id="reportDialog" class="report-dialog">
+    <div class="report-burst">★</div><p class="eyebrow">MISSION COMPLETE</p><h2 id="reportTitle">今日任务完成</h2><p id="reportCopy"></p><div class="report-counts" id="reportCounts"></div><button class="primary-btn" id="closeReport">收好战报</button>
+  </dialog>
+
+  <dialog id="editDialog" class="edit-dialog">
+    <form id="editForm" method="dialog">
+      <header><div><p id="editMeta"></p><h2 id="editWord"></h2></div><button type="button" class="round-btn" id="closeEdit">×</button></header>
+      <input type="hidden" name="wordId">
+      <div class="edit-color"><label><input type="radio" name="color" value="gray"><span class="gray">灰 · 未筛查</span></label><label><input type="radio" name="color" value="red"><span class="red">红 · 不会</span></label><label><input type="radio" name="color" value="yellow"><span class="yellow">黄 · 模糊</span></label><label><input type="radio" name="color" value="green"><span class="green">绿 · 会了</span></label></div>
+      <label>下次复习日期<input name="dueDate" type="date"></label>
+      <div class="word-history" id="wordHistory"></div>
+      <footer><button type="button" class="secondary-btn" id="editSpeak">🔊 朗读</button><button class="primary-btn" type="submit">保存修改</button></footer>
+    </form>
+  </dialog>
+
+  <dialog id="settingsDialog" class="settings-dialog">
+    <form id="settingsForm" method="dialog">
+      <header><div><p class="eyebrow">BASE CAMP</p><h2>远征设置与备份</h2></div><button type="button" class="round-btn" id="closeSettings">×</button></header>
+      <div class="settings-grid"><label>每日筛查目标<input name="screeningTarget" type="number" min="1" max="200"></label><label>每日复习上限<input name="dailyReviewLimit" type="number" min="1" max="100"></label></div>
+      <p class="settings-note">学习数据只保存在当前浏览器。英文释义首次查看需要联网，取得后会缓存在本机；建议每月导出一次JSON备份。</p>
+      <div class="backup-actions"><button type="button" class="secondary-btn" id="exportJson">导出JSON备份</button><label class="secondary-btn file-btn">导入JSON<input id="importJson" type="file" accept="application/json,.json"></label></div>
+      <button type="button" class="danger-btn" id="resetData">清空并重新开始</button>
+      <footer><button class="primary-btn" type="submit">保存设置</button></footer>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="word-data.js"></script>
+  <script src="data-model.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
