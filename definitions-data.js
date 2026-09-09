@@ -876,7 +876,7 @@
   "g4-u17-evident": [["adjective","clear to the eye or mind"]]
   };
   window.DefinitionsData = {
-    get: function (wordId) { return data[wordId] || []; },
+    get: function (wordId) { return (data[wordId] || []).map(function (d) { return { partOfSpeech: d[0] || '', definition: d[1] || '' }; }); },
     has: function (wordId) { return !!(data[wordId] && data[wordId].length); }
   };
 })();
