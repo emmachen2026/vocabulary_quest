@@ -175,25 +175,35 @@
     if (!word) return;
     const panel = document.querySelector('#definitionPanel');
     const button = document.querySelector('#showDefinition');
-    const cached = M.stateFor(state, word.id).definitions || [];
-    if (cached.length) {
+    const saved = M.stateFor(state, word.id).definitions || [];
+    const local = (window.DefinitionsData && DefinitionsData.get(word.id)) || [];
+
+    // Merge saved (from API, user-specific) with local pre-cached
+    let definitions = saved.length ? saved : local;
+
+    if (definitions.length) {
       if (!panel.hidden) {
         panel.hidden = true;
-        button.textContent = '查看英文释义 · 已保存';
+        button.textContent = '查看英文释义';
       } else {
-        renderDefinitions(panel, cached);
-        button.textContent = '收起英文释义 · 已保存';
+        renderDefinitions(panel, definitions);
+        button.textContent = '收起英文释义';
       }
       return;
     }
+
+    // Nothing cached anywhere — try live API with short timeout
     panel.hidden = false;
     panel.textContent = '正在查找简明英文释义…';
     button.disabled = true;
     try {
-      const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word.word)}`);
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 5000);
+      const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word.word)}`, { signal: controller.signal });
+      clearTimeout(timer);
       if (!response.ok) throw new Error('not found');
       const payload = await response.json();
-      const definitions = [];
+      definitions = [];
       (payload[0]?.meanings || []).forEach(meaning => {
         const first = (meaning.definitions || []).find(item => item.definition);
         if (first && definitions.length < 3 && !definitions.some(item => item.definition === first.definition)) {
@@ -207,7 +217,7 @@
       renderDefinitions(panel, definitions);
       button.textContent = '收起英文释义 · 已保存';
     } catch {
-      panel.innerHTML = '<span class="definition-error">暂时无法取得释义，请检查网络后重试。</span>';
+      panel.innerHTML = '<span class="definition-error">暂无此词的英文释义。</span>';
     } finally {
       button.disabled = false;
     }
