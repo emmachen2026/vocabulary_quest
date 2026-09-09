@@ -244,7 +244,7 @@
     document.querySelector('#definitionPanel').hidden = true;
     document.querySelector('#definitionPanel').innerHTML = '';
     document.querySelector('#showDefinition').disabled = false;
-    document.querySelector('#showDefinition').textContent = item.definitions?.length ? '查看英文释义 · 已保存' : '查看英文释义';
+    document.querySelector('#showDefinition').textContent = (item.definitions?.length || (window.DefinitionsData && DefinitionsData.has(word.id))) ? '查看英文释义 · 已保存' : '查看英文释义';
     document.querySelector('#sessionBack').disabled = !activeSession.undo.length;
     document.querySelector('#greenNextLabel').textContent = item.color === 'green' && item.greenStage === 1 ? '14天后确认' : item.color === 'green' && item.greenStage === 2 ? '30天后确认' : item.color === 'green' && item.greenStage >= 3 ? '通过即稳定' : '7天后确认';
     const backlog = activeSession.type === 'review' ? Math.max(0, M.allDue(words, state, today()).length - activeSession.queue.length) : 0;
